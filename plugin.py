@@ -95,6 +95,10 @@ class Punny(callbacks.Plugin):
         with open(filename, 'w') as f:
             pickle = Pickler(f)
             pickle.dump(self.pungen.puns)
+    def _list(self, irc, msg, args):
+        """List the currently available puns."""
+        pass
+    #list = wrap(_list)
 
 Class = Punny
 
