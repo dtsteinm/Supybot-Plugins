@@ -29,14 +29,17 @@
 
 ###
 
-# import supybot.utils as utils
+import supybot.conf as conf
+import supybot.utils as utils
 from supybot.commands import *
-# import supybot.plugins as plugins
-# import supybot.ircutils as ircutils
+import supybot.plugins as plugins
+import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
 import punny
+from os.path import isfile
+from pickle import Pickler, Unpickler
 
-filename = conf.supybot.directories.data.dirize('Punny.conf')
+filename = conf.supybot.directories.data.dirize('Punny.dat')
 
 class Punny(callbacks.Plugin):
     """Add the help for "@plugin help Punny" here
@@ -44,18 +47,21 @@ class Punny(callbacks.Plugin):
     def __init__(self, irc):
         callbacks.Plugin.__init__(self, irc)
         self.pungen = punny.PunGenerator()
-        self.conf = self._getpuns(filename)
-        self._setconf(self.conf)
+        if isfile(filename):
+            self.conf = self._getpuns(filename)
+            self._setconf(self.conf)
         # plugins.ChannelDBHandler.__init__(self)
 
 
     def _getpuns(self, filename):
         """Get the pun dictionary from the conf file."""
-        pass
+        with open(filename, 'r') as f:
+            pickle = Unpickler(f)
+            return pickle.load()
     def _setconf(self, conf):
         """Overwrite the default pun dictionary with """ \
                 """the one retrieved from the conf file."""
-        pass
+        self.pungen.puns = conf
     def _squid(self, irc, msg, args, phrase):
         """<phrase>
 
@@ -73,7 +79,9 @@ class Punny(callbacks.Plugin):
     add = wrap(_add, [additional('text')])    
     def _save(self):
         """Save the current pun dictionary to a conf file."""
-        pass
+        with open(filename, 'w') as f:
+            pickle = Pickler(f)
+            pickle.dump(self.pungen.puns)
 
 Class = Punny
 
