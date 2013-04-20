@@ -30,8 +30,8 @@
 ###
 
 """
-Add a description of the plugin (to be presented to the user inside the wizard)
-here.  This should describe *what* the plugin does.
+Generates and displays puns with the 'squid' command.
+Additional replacements can be specified with the 'add' command.
 """
 
 import supybot
@@ -42,7 +42,7 @@ import supybot.world as world
 __version__ = ""
 
 # XXX Replace this with an appropriate author or supybot.Author instance.
-__author__ = supybot.authors.unknown
+__author__ = 'Dylan Steinmetz <dtsteinm@gmail.com>'
 
 # This is a dictionary mapping supybot.Author instances to lists of
 # contributions.
