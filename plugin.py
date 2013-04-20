@@ -1,5 +1,5 @@
 ###
-# Copyright (c) 2013, Dylan Steinmetz 
+# Copyright (c) 2013, Dylan Steinmetz
 
 # All rights reserved.
 #
@@ -41,6 +41,7 @@ from pickle import Pickler, Unpickler
 
 filename = conf.supybot.directories.data.dirize('Punny.dat')
 
+
 class Punny(callbacks.Plugin):
     """ Generates and displays puns with the 'squid' command.
     Additional replacements can be specified with the 'add' command.  """
@@ -48,27 +49,32 @@ class Punny(callbacks.Plugin):
         callbacks.Plugin.__init__(self, irc)
         self.pungen = punny.PunGenerator()
         if isfile(filename):
-            self.conf = self._getpuns(filename)
-            self._setconf(self.conf)
+            self.config = self._getpuns(filename)
+            self._setconf(self.config)
         # plugins.ChannelDBHandler.__init__(self)
-
 
     def _getpuns(self, filename):
         """Get the pun dictionary from the conf file."""
         with open(filename, 'r') as f:
             pickle = Unpickler(f)
             return pickle.load()
-    def _setconf(self, conf):
+
+    def _setconf(self, config):
         """Overwrite the default pun dictionary with """ \
-                """the one retrieved from the conf file."""
-        self.pungen.puns = conf
+                """the one retrieved from the config file."""
+        # FIXME: Check for changes in module's pun dictionary
+        self.pungen.puns = config
+
     def _squid(self, irc, msg, args, phrase):
         """<phrase>
 
         Generates a clever squid pun.
         """
+        # TODO: I would like to find a way to force this being
+        #       displayed in the channel
         irc.reply(self.pungen.generate_pun(phrase))
     squid = wrap(_squid, [additional('text')])
+
     def _add(self, irc, msg, args, words):
         """<pun> [<word> [<replace>]]
 
@@ -78,25 +84,33 @@ class Punny(callbacks.Plugin):
         <replace> can be used to specify an alternative when a
         drop-in replacement of <word> with <pun> does not make sense.
         """
-        """Compare: 
+        """Compare:
         user : bot: punny add fin even
         user : bot: punny squid What is this, I don't even.
         bot : user: What is this, I don't fin.
         To:
         user : bot: punny add fin even efin
-        user : bot: punny squid What is this, I don't even. 
+        user : bot: punny squid What is this, I don't even.
         bot : user: What is this, I don't efin.
         """
-        self.pungen.add_pun(*words.split())
-        self._save()
-    add = wrap(_add, [additional('text')])    
+        try:
+            self.pungen.add_pun(*words.split())
+            self._save()
+            irc.reply(conf.supybot.replies.success)
+        except:
+            # TODO: Log this
+            irc.reply(conf.supybot.replies.error)
+    add = wrap(_add, [additional('text')])
+
     def _save(self):
         """Save the current pun dictionary to a conf file."""
         with open(filename, 'w') as f:
             pickle = Pickler(f)
             pickle.dump(self.pungen.puns)
+
     def _list(self, irc, msg, args):
         """List the currently available puns."""
+        # TODO: write _list
         pass
     #list = wrap(_list)
 
