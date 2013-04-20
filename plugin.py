@@ -42,8 +42,8 @@ from pickle import Pickler, Unpickler
 filename = conf.supybot.directories.data.dirize('Punny.dat')
 
 class Punny(callbacks.Plugin):
-    """Add the help for "@plugin help Punny" here
-    This should describe *how* to use this plugin."""
+    """ Generates and displays puns with the 'squid' command.
+    Additional replacements can be specified with the 'add' command.  """
     def __init__(self, irc):
         callbacks.Plugin.__init__(self, irc)
         self.pungen = punny.PunGenerator()
@@ -70,9 +70,22 @@ class Punny(callbacks.Plugin):
         irc.reply(self.pungen.generate_pun(phrase))
     squid = wrap(_squid, [additional('text')])
     def _add(self, irc, msg, args, words):
-        """<pun> [<word> [<replace>] ]
+        """<pun> [<word> [<replace>]]
 
         Add a new pun to the dictionary.
+        If <word> is supplied, <pun> will automatically replace
+        all occurences of <word> found in phrases sent to squid.
+        <replace> can be used to specify an alternative when a
+        drop-in replacement of <word> with <pun> does not make sense.
+        """
+        """Compare: 
+        user : bot: punny add fin even
+        user : bot: punny squid What is this, I don't even.
+        bot : user: What is this, I don't fin.
+        To:
+        user : bot: punny add fin even efin
+        user : bot: punny squid What is this, I don't even. 
+        bot : user: What is this, I don't efin.
         """
         self.pungen.add_pun(*words.split())
         self._save()
