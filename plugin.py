@@ -1,6 +1,8 @@
 ###
-# Copyright (c) 2013, Dylan Steinmetz
-# All rights reserved.
+# Copyright (C) 2013 Dylan Steinmetz <dtsteinm@gmail.com>
+# This work is free. You can redistribute it and/or modify it under the
+# terms of the Do What The Fuck You Want To Public License, Version 2,
+# as published by Sam Hocevar. See the COPYING file for more details.
 #
 #
 ###
@@ -15,7 +17,7 @@ import supybot.callbacks as callbacks
 
 
 class Choose(callbacks.Plugin):
-    """Make tough desicions between two or more options, easily."""
+    """Make tough decisions between two or more options, easily."""
     def __init__(self, irc):
           callbacks.Plugin.__init__(self, irc)
 

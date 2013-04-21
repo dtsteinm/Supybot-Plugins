@@ -1,6 +1,8 @@
 ###
-# Copyright (c) 2013, Dylan Steinmetz
-# All rights reserved.
+# Copyright (C) 2013 Dylan Steinmetz <dtsteinm@gmail.com>
+# This work is free. You can redistribute it and/or modify it under the
+# terms of the Do What The Fuck You Want To Public License, Version 2,
+# as published by Sam Hocevar. See the COPYING file for more details.
 #
 #
 ###
@@ -15,7 +17,7 @@ import supybot.world as world
 
 # Use this for the version of this plugin.  You may wish to put a CVS keyword
 # in here if you're keeping the plugin in CVS or some similar system.
-__version__ = ""
+__version__ = "0.1"
 
 # XXX Replace this with an appropriate author or supybot.Author instance.
 __author__ = "Dylan Steinmetz <dtsteinm@gmail.com>"
