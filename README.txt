@@ -1,1 +1,1 @@
-Insert a description of your plugin here, with any notes, etc. about using it.
+Generates and displays puns with the 'squid' command. Additional replacements can be specified with the 'add' command.
