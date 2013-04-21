@@ -1,33 +1,15 @@
 ###
-# Copyright (c) 2013, Dylan Steinmetz
-
-# All rights reserved.
+# Copyright (C) 2013 Dylan Steinmetz <dtsteinm@gmail.com>
+# This work is free. You can redistribute it and/or modify it under the
+# terms of the Do What The Fuck You Want To Public License, Version 2,
+# as published by Sam Hocevar. See the COPYING file for more details.
 #
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
 #
-#   * Redistributions of source code must retain the above copyright notice,
-#     this list of conditions, and the following disclaimer.
-#   * Redistributions in binary form must reproduce the above copyright notice,
-#     this list of conditions, and the following disclaimer in the
-#     documentation and/or other materials provided with the distribution.
-#   * Neither the name of the author of this software nor the name of
-#     contributors to this software may be used to endorse or promote products
-#     derived from this software without specific prior written consent.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
-
 ###
+
+import punny
+from os.path import isfile
+from pickle import Pickler, Unpickler
 
 import supybot.conf as conf
 import supybot.utils as utils
@@ -35,20 +17,18 @@ from supybot.commands import *
 import supybot.plugins as plugins
 import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
-import punny
-from os.path import isfile
-from pickle import Pickler, Unpickler
 
 filename = conf.supybot.directories.data.dirize('Punny.dat')
 
 
 class Punny(callbacks.Plugin):
-    """ Generates and displays puns with the 'squid' command.
+    """Generates and displays puns with the 'squid' command.
     Additional replacements can be specified with the 'add' command.  """
     def __init__(self, irc):
         callbacks.Plugin.__init__(self, irc)
         self.pungen = punny.PunGenerator()
         if isfile(filename):
+            # TODO: Use punny load or update (when written)
             self.config = self._getpuns(filename)
             self._setconf(self.config)
         # plugins.ChannelDBHandler.__init__(self)
@@ -72,6 +52,7 @@ class Punny(callbacks.Plugin):
         """
         # TODO: I would like to find a way to force this being
         #       displayed in the channel
+        # TODO: Log when called
         irc.reply(self.pungen.generate_pun(phrase))
     squid = wrap(_squid, [additional('text')])
 
@@ -93,6 +74,8 @@ class Punny(callbacks.Plugin):
         user : bot: punny squid What is this, I don't even.
         bot : user: What is this, I don't efin.
         """
+        # FIXME: Print help message instead of error message
+        #        when wrong number of args provided.
         try:
             self.pungen.add_pun(*words.split())
             self._save()
@@ -104,15 +87,18 @@ class Punny(callbacks.Plugin):
 
     def _save(self):
         """Save the current pun dictionary to a conf file."""
+        # TODO: Use punny dump (when written)
         with open(filename, 'w') as f:
             pickle = Pickler(f)
             pickle.dump(self.pungen.puns)
 
     def _list(self, irc, msg, args):
         """List the currently available puns."""
-        # TODO: write _list
+        # TODO: write _list; use punny modules print/list if avail
         pass
     #list = wrap(_list)
+
+# TODO: Add error classes
 
 Class = Punny
 
