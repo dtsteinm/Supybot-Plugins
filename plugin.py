@@ -27,7 +27,7 @@ class Choose(callbacks.Plugin):
         Randomly selects one of multiple choices.
         """
         options = []
-        options += [x.strip() for x in choices.split('or')]
+        options += [x.strip() for x in choices.split(' or ')]
         irc.reply(rand().choice(options))
     choose = wrap(choose, [additional('text')])
 

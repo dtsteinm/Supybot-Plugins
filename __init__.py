@@ -17,10 +17,11 @@ import supybot.world as world
 
 # Use this for the version of this plugin.  You may wish to put a CVS keyword
 # in here if you're keeping the plugin in CVS or some similar system.
-__version__ = "0.1"
+__version__ = "0.2"
 
 # XXX Replace this with an appropriate author or supybot.Author instance.
-__author__ = "Dylan Steinmetz <dtsteinm@gmail.com>"
+__author__ = supybot.Author('Dylan Steinmetz', 'dtsteinm',
+'dtsteinm@gmail.com')
 
 # This is a dictionary mapping supybot.Author instances to lists of
 # contributions.
