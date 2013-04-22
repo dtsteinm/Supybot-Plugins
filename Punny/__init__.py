@@ -1,0 +1,47 @@
+###
+# Copyright (C) 2013 Dylan Steinmetz <dtsteinm@gmail.com>
+# This work is free. You can redistribute it and/or modify it under the
+# terms of the Do What The Fuck You Want To Public License, Version 2,
+# as published by Sam Hocevar. See the COPYING file for more details.
+#
+#
+###
+
+"""
+Generates and displays puns with the 'squid' command.
+Additional replacements can be specified with the 'add' command.
+"""
+
+import supybot
+import supybot.world as world
+
+# Use this for the version of this plugin.  You may wish to put a CVS keyword
+# in here if you're keeping the plugin in CVS or some similar system.
+__version__ = "0.2"
+
+# XXX Replace this with an appropriate author or supybot.Author instance.
+__author__ = supybot.Author('Dylan Steinmetz', 'dtsteinm',
+'dtsteinm@gmail.com')
+
+# This is a dictionary mapping supybot.Author instances to lists of
+# contributions.
+__contributors__ = {}
+
+# This is a url where the most recent plugin package can be downloaded.
+__url__ = '' # 'http://supybot.com/Members/yourname/Punny/download'
+
+import config
+import plugin
+reload(plugin) # In case we're being reloaded.
+# Add more reloads here if you add third-party modules and want them to be
+# reloaded when this plugin is reloaded.  Don't forget to import them as well!
+reload(punny)
+
+if world.testing:
+    import test
+
+Class = plugin.Class
+configure = config.configure
+
+
+# vim:set shiftwidth=4 tabstop=4 expandtab textwidth=79:
