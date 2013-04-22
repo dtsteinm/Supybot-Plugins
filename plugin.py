@@ -19,7 +19,8 @@ import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
 
 filename = conf.supybot.directories.data.dirize('Punny.dat')
-
+see_help = 'You did not provide enough parameters. Please use @help '\
+                'punny add for details.'
 
 class Punny(callbacks.Plugin):
     """Generates and displays puns with the 'squid' command.
@@ -74,9 +75,13 @@ class Punny(callbacks.Plugin):
         user : bot: punny squid What is this, I don't even.
         bot : user: What is this, I don't efin.
         """
-        # FIXME: Print help message instead of error message
-        #        when wrong number of args provided.
+        if words is None:
+            irc.reply(see_help)
+            return
+        # TODO: Use 'spiced up' success messages
         try:
+            # TODO: Check if it exists (probably just
+            #       implement in punny module?)
             self.pungen.add_pun(*words.split())
             self._save()
             irc.reply(conf.supybot.replies.success)
