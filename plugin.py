@@ -7,7 +7,7 @@
 #
 ###
 
-from random import Random as rand
+from random import choice
 
 import supybot.utils as utils
 from supybot.commands import *
@@ -28,7 +28,7 @@ class Choose(callbacks.Plugin):
         """
         options = []
         options += [x.strip() for x in choices.split(' or ')]
-        irc.reply(rand().choice(options))
+        irc.reply(choice(options))
     choose = wrap(choose, [additional('text')])
 
 Class = Choose
