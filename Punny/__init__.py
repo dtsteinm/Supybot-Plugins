@@ -28,7 +28,7 @@ __author__ = supybot.Author('Dylan Steinmetz', 'dtsteinm',
 __contributors__ = {}
 
 # This is a url where the most recent plugin package can be downloaded.
-__url__ = '' # 'http://supybot.com/Members/yourname/Punny/download'
+__url__ = 'https://github.com/dtsteinm/supybot-plugins/tree/master/Punny'
 
 import config
 import plugin

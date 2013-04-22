@@ -27,7 +27,7 @@ __author__ = "Dylan Steinmetz <dtsteinm@gmail.com>"
 __contributors__ = {}
 
 # This is a url where the most recent plugin package can be downloaded.
-__url__ = '' # 'http://supybot.com/Members/yourname/Quiet/download'
+__url__ = 'https://github.com/dtsteinm/supybot-plugins/tree/master/Quiet'
 
 import config
 import plugin
