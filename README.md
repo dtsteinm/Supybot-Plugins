@@ -3,7 +3,7 @@ Plugins I have written for the Supybot IRC bot.
 
 Quiet:
 ---
-Tell an Infobot whether it should speak or remain silent when unaddressed.
+Tell an Infobot whether it should speak or remain silent when not addressed.
 
 Punny:
 ---
