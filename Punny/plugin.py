@@ -7,7 +7,7 @@
 #
 ###
 
-import punny
+import local.punny
 from os.path import isfile
 from pickle import Pickler, Unpickler
 
@@ -27,9 +27,9 @@ class Punny(callbacks.Plugin):
     Additional replacements can be specified with the 'add' command.  """
     def __init__(self, irc):
         callbacks.Plugin.__init__(self, irc)
-        self.pungen = punny.PunGenerator()
+        self.pungen = local.punny.PunGenerator()
         if isfile(filename):
-            # TODO: Use punny load or update (when written)
+            # TODO: Use local.punny load or update (when written)
             self.config = self._getpuns(filename)
             self._setconf(self.config)
         # plugins.ChannelDBHandler.__init__(self)
@@ -81,7 +81,7 @@ class Punny(callbacks.Plugin):
         # TODO: Use 'spiced up' success messages
         try:
             # TODO: Check if it exists (probably just
-            #       implement in punny module?)
+            #       implement in local.punny module?)
             self.pungen.add_pun(*words.split())
             self._save()
             irc.reply(conf.supybot.replies.success)
@@ -92,14 +92,14 @@ class Punny(callbacks.Plugin):
 
     def _save(self):
         """Save the current pun dictionary to a conf file."""
-        # TODO: Use punny dump (when written)
+        # TODO: Use local.punny dump (when written)
         with open(filename, 'w') as f:
             pickle = Pickler(f)
             pickle.dump(self.pungen.puns)
 
     def _list(self, irc, msg, args):
         """List the currently available puns."""
-        # TODO: write _list; use punny modules print/list if avail
+        # TODO: write _list; use local.punny modules print/list if avail
         pass
     #list = wrap(_list)
 
