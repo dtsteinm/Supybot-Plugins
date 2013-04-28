@@ -28,7 +28,7 @@ class Choose(callbacks.Plugin):
         """
         options = []
         options += [y.strip() for x in choices.split(' or ')
-                for y in x.split(';')]
+                for y in x.split(';') if y not in ['', ' ']]
         irc.reply(choice(options))
     choose = wrap(choose, [additional('text')])
 
