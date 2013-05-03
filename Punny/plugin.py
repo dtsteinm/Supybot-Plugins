@@ -9,7 +9,6 @@
 
 import local.punny
 from os.path import isfile
-from pickle import Pickler, Unpickler
 
 import supybot.conf as conf
 import supybot.utils as utils
@@ -22,6 +21,7 @@ filename = conf.supybot.directories.data.dirize('Punny.dat')
 see_help = 'You did not provide enough parameters. Please use @help '\
                 'punny add for details.'
 
+
 class Punny(callbacks.Plugin):
     """Generates and displays puns with the 'squid' command.
     Additional replacements can be specified with the 'add' command.  """
@@ -29,22 +29,10 @@ class Punny(callbacks.Plugin):
         callbacks.Plugin.__init__(self, irc)
         self.pungen = local.punny.PunGenerator()
         if isfile(filename):
-            # TODO: Use local.punny load or update (when written)
-            self.config = self._getpuns(filename)
-            self._setconf(self.config)
+            # TODO: Allow pun dictionary to be overwritten with
+            #       self.pungen.load_dict
+            self.pungen.update_dict(filename)
         # plugins.ChannelDBHandler.__init__(self)
-
-    def _getpuns(self, filename):
-        """Get the pun dictionary from the conf file."""
-        with open(filename, 'r') as f:
-            pickle = Unpickler(f)
-            return pickle.load()
-
-    def _setconf(self, config):
-        """Overwrite the default pun dictionary with """ \
-                """the one retrieved from the config file."""
-        # FIXME: Check for changes in module's pun dictionary
-        self.pungen.puns = config
 
     def _squid(self, irc, msg, args, phrase):
         """<phrase>
@@ -92,10 +80,7 @@ class Punny(callbacks.Plugin):
 
     def _save(self):
         """Save the current pun dictionary to a conf file."""
-        # TODO: Use local.punny dump (when written)
-        with open(filename, 'w') as f:
-            pickle = Pickler(f)
-            pickle.dump(self.pungen.puns)
+        self.pungen.save_dict(filename)
 
     def _list(self, irc, msg, args):
         """List the currently available puns."""
