@@ -40,8 +40,7 @@ class Choose(callbacks.Plugin):
                 irc.reply(no_choice_reply)
             return
 
-        options = []
-        options += [y.strip() for x in choices.split(' or ')
+        options = [y.strip() for x in choices.split(' or ')
                     for y in x.split(';') if y not in ['', ' ']]
         if len(options) is 1:
             if conf.get(conf.supybot.plugins.Infobot.personality):
