@@ -15,6 +15,8 @@ import supybot.plugins as plugins
 import supybot.ircutils as ircutils
 import supybot.callbacks as callbacks
 
+zero_choice_reply = ['You gotta give me something...', ]
+one_choice_reply = ['So, it\'s between that and...', ]
 
 class Choose(callbacks.Plugin):
     """Make tough decisions between two or more options, easily."""
@@ -26,10 +28,18 @@ class Choose(callbacks.Plugin):
 
         Randomly selects one of multiple choices.
         """
+        if choices is None:
+            irc.reply(choice(zero_choice_reply))
+            return
+
         options = []
         options += [y.strip() for x in choices.split(' or ')
                 for y in x.split(';') if y not in ['', ' ']]
-        irc.reply(choice(options))
+        if len(options) is 1:
+            irc.reply(choice(one_choice_reply))
+            return
+        else:
+            irc.reply(choice(options))
     choose = wrap(choose, [additional('text')])
 
 Class = Choose
